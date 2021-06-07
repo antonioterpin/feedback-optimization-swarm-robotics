@@ -1,7 +1,8 @@
-function dudt = ctrl(y, gamma, B, d, t, W, ODelta)
+function dudt = ctrl(gamma, B, d, t, W, ODelta, y, u)
 %CTRL Implements the feedback optimization controller
 %   INPUT:
 %       y       -- 2Nx1 positions of the agents [.., yix, yiy, ..].'
+%       u       -- 2Nx1 Inputs
 %       gamma   -- Gains of the cost function
 %       B       -- Incidence matrix, the direction is specified implicitly
 %                  through the cost function
