@@ -5,19 +5,21 @@ clc;
 addpath(genpath('.'));
 
 Ts = .4;
-Nsim = 1e3;
-continuousTime = true;
-%% Single agent (LLC test)
-a = Agent([0;0], 0, 0, continuousTime);
-x = zeros(2,Nsim);
-for k = 2:Nsim
-    a.tick([2;1],Ts);
-    x(:,k) = a.position;
-end
+Nsim = 4*1e2;
+gamma = [20, 20, 1]; % cost function weights
+continuousTime = false;
+% %% Single agent (LLC test)
+% a = Agent([0;0], 5, 0, continuousTime);
+% x = zeros(2,Nsim);
+% for k = 2:Nsim
+%     a.tick([5;1],Ts);
+%     x(:,k) = a.position;
+% end
+% 
+% figure;
+% plot(x(1,:), x(2,:), '*');
 
-plot(x(1,:), x(2,:), '*');
-
-%% 
+%
 
 rng(0);
 %
@@ -47,7 +49,7 @@ for i = 1:size(swarm,2)
     agents{i} = Agent(swarm(1:2,i), swarm(3,i), 0, continuousTime);
 end
 
-%% Centralized
+% Centralized
 for k = 2:Nsim
     % time varying cost function
     Ho = zeros(size(swarm,2));
@@ -55,17 +57,21 @@ for k = 2:Nsim
     for i = 1:size(swarm,2)
         repulsion_from_obstacles = agents{i}.position - obstacles;
         repulsion = sum(repulsion_from_obstacles.^2);
-        repulsion(repulsion > sensingRadius / 3) = Inf;
+        repulsion(repulsion > sensingRadius / 2) = Inf;
         Ho(i,i) = sum(1./repulsion);
-        fo(i, :) = - transpose(sum(obstacles ./ repmat(repulsion, 2, 1), 2));
+        fo(i, :) = transpose(sum(obstacles ./ repmat(repulsion, 2, 1), 2));
     end
     
     
     % solve optimization problem (currently centralized!)
     u = zeros(size(swarm,2),2);
     opts = optimoptions('quadprog','display','off');
-    u(:,1) = quadprog(H + Ht + Ho, f(:,1) + ft(:,1) + fo(:,1),[],[],[],[],[],[],[],opts);
-    u(:,2) = quadprog(H + Ht + Ho, f(:,2) + ft(:,2) + fo(:,2),[],[],[],[],[],[],[],opts);
+    u(:,1) = quadprog(gamma(1) * H + gamma(2) * Ht + Ho, ...
+        gamma(1) * f(:,1) + gamma(2) * ft(:,1) + fo(:,1),...
+        [],[],[],[],[],[],[],opts);
+    u(:,2) = quadprog(gamma(1) * H + gamma(2) * Ht + Ho,...
+        gamma(1) * f(:,2) + gamma(2) * ft(:,2) + fo(:,2),...
+        [],[],[],[],[],[],[],opts);
     
     for i = 1:size(swarm,2)
         agents{i}.tick(u(i,:).',Ts);
@@ -141,5 +147,5 @@ function [swarm, formation, sensingRadius] = FormationSpecification
         NaN, NaN, NaN, -.3, NaN];
     
     % sensing radius
-    sensingRadius = 3;
+    sensingRadius = 1;
 end

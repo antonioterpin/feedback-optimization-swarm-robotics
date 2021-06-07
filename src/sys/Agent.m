@@ -27,7 +27,7 @@ classdef Agent < handle
 %                 v0              (1,1)
                 phi0            (1,1)
                 t0              (1,1)
-                continuousTime  logical
+                continuousTime  logical = false
             end
             
             agent.position = x0;
@@ -137,7 +137,10 @@ classdef Agent < handle
             %   
             %   Override this method to implement actuator limitations
             
-            ubar = u; % default: none
+%             ubar = u; % default: none
+            ubar(1) = max(-.1, min(.1, u(1)));
+%             ubar(2) = max(-.5, min(.5, u(2)));
+            ubar(2) = u(2);
         end
     end
 end
