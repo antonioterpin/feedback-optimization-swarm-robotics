@@ -1,4 +1,4 @@
-function dxdt = dyn(x, u)
+function dxdt = dyn_implemented(x, u)
 %DYN Implements the plant dynamics
 %   INPUT:
 %       x -- 3Nx1 agents state
@@ -6,18 +6,18 @@ function dxdt = dyn(x, u)
 
 N = numel(x) / 3;
 k = [.1, .1];
-velSat = [-.1, .1];
+velSat = [-Inf, Inf];
 
 % llc
 ubar = zeros(2,N);
 states = reshape(x,3,N);
-delta = reshape(u,2,N) - states(1:2,:);
-theta = states(3,:) - atan2(delta(2,:), delta(1,:));
+delta = states(1:2,:) - reshape(u,2,N);
+theta = pi + states(3,:) - atan2(delta(2,:), delta(1,:));
 ubar(1,:) = k(1) * vecnorm(delta,2,1) .* cos(theta);
-ubar(2,:) = -k(2) * theta;
+ubar(2,:) = -k(1)*cos(theta).*sin(theta) - k(2) * theta;
 
 % input saturation
-vel = ubar(1,:);%max(velSat(1), min(velSat(2), ubar(1,:)));
+vel = max(velSat(1), min(velSat(2), ubar(1,:)));
 angVel = ubar(2,:);
 
 % dxdt

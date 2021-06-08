@@ -1,4 +1,4 @@
-function dudt = ctrl(gamma, B, d, t, W, ODelta, y, u)
+function dudt = ctrl_implemented(gamma, B, d, t, W, ODelta, y, u, params)
 %CTRL Implements the feedback optimization controller
 %   INPUT:
 %       gamma   -- Gains of the cost function
@@ -16,6 +16,9 @@ function dudt = ctrl(gamma, B, d, t, W, ODelta, y, u)
 
 dudt = ...
     -gamma(1) * (kron(B*B.',eye(2)) * y - kron(B.',eye(2)).' * d) ...
-    -gamma(2) * (y - repmat(t, numel(y) / 2, 1)) ...
-    -gamma(3) * (diag(kron(W, [1;1])) * y - ODelta);
+    -gamma(2) * (y - repmat(t, numel(y) / 2, 1));
+
+if params(1) % obstacle_avoidance on/off
+    dudt = dudt + +gamma(3) * (diag(kron(W, [1,1])) * y - ODelta);
+end
 end

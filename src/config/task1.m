@@ -14,21 +14,8 @@ function [x0, B, d, t, u0, epsilon, O, R, limits] = task1
 %       limits  -- suggested visualizations limits [minX, maxX, minY, maxY]
 
 N_agents = 5; % Number of agents
-N_obstacles = 5; % Number of obstacles
-R = 1; % Sensing radius
-
-%% Initial conditions
-% Swarm
-initial_position_boundaries = ...
-    [-.5, .5;     % a
-	 -.5, .5;     % b
-     -pi, pi];    % phi
-x0 = reshape(rand(3, N_agents) ...
-    .* repmat(diff(initial_position_boundaries, [], 2), 1, N_agents) ...
-    + repmat(min(initial_position_boundaries, [], 2), 1, N_agents), [],1);
-% Controller
-u0 = zeros(2*N_agents, 1);
-epsilon = .01;
+N_obstacles = 10; % Number of obstacles
+R = .5; % Sensing radius
 
 %% Formation
 B = [1, 0, 0, 0, -1, 1, 0;
@@ -37,8 +24,8 @@ B = [1, 0, 0, 0, -1, 1, 0;
     0, 0, -1, 1, 0, -1, 1;
     0, 0, 0, -1, 1, 0, 0];
 d = reshape(...
-    [1, .3, .8, .8, .3, .5, .5;    % X
-     0, 1, .3, .3, 1, 1.3, 1.3],...% Y
+    [1, .3, -.8, -.8, .3, .5, .5;    % X
+     0, 1, .3, -.3, -1, 1.3, -1.3],...% Y
     [],1); 
 
 %% Obstacles generation
@@ -54,6 +41,19 @@ target_boundaries = [8, 9; % X
 t = rand(2, 1) ...
     .* diff(target_boundaries, [], 2) ...
     + min(target_boundaries, [], 2);
+
+%% Initial conditions
+% Swarm
+initial_position_boundaries = ...
+    [-.5, .5;     % a
+	 -.5, .5;     % b
+     -pi, pi];    % phi
+x0 = reshape(rand(3, N_agents) ...
+    .* repmat(diff(initial_position_boundaries, [], 2), 1, N_agents) ...
+    + repmat(min(initial_position_boundaries, [], 2), 1, N_agents), [],1);
+% Controller
+u0 = 1e-1*repmat(t, N_agents, 1);
+epsilon = .005;
     
 %% World boundaries (only for visualization)
 limits = [-1, 10, -1, 10];
