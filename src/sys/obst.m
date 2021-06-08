@@ -5,9 +5,12 @@ function [W,ODelta] = obst(O,R,y)
 %       O       -- 2xO obstacle positions
 %       R       -- sensing radius
 %   OUTPUT:
-%       ODelta   -- 2NOx1 (obstacle indicator matrix)*obstacles 
+%       ODelta  -- 2Nx1 (obstacle indicator matrix)*obstacles 
 %       W       -- Nx1 number of obstacles for each agent
-Delta = (vecnorm(reshape(y - repmat(O, numel(y) / 2, 1), 2, []), 2, 1) < R).';
-ODelta = Delta.'*kron(eye(numel(y)/2),0.');
-W = sum(reshape(Delta, size(O,1), []), 2);
+N = numel(y) / 2;
+distances = vecnorm(reshape(...
+    repmat(y, 1, size(O,2)) - repmat(O, N, 1), 2, []));
+Delta = (distances < R).';
+ODelta = kron(eye(N),O.').'*Delta;
+W = reshape(sum(reshape(Delta.', [], N)), [], 1);
 end

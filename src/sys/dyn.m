@@ -20,10 +20,10 @@ end
 
 % input saturation
 vel = max(velSat(1), min(velSat(2), ubar(1,:)));
-angVel = ubar(2);
+angVel = ubar(2,:);
 
 % dxdt
 dir = [cos(states(3,:)); sin(states(3,:))];
-dxdt = [repmat(vel,2,1) .* dir; angVel];
+dxdt = reshape([repmat(vel,2,1) .* dir; angVel], [], 1);
 end
 
