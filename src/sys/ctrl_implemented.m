@@ -19,6 +19,6 @@ dudt = ...
     -gamma(2) * (y - repmat(t, numel(y) / 2, 1));
 
 if params(1) % obstacle_avoidance on/off
-    dudt = dudt + +gamma(3) * (diag(kron(W, [1,1])) * y - ODelta);
+    dudt = dudt + gamma(3) * (diag(kron(W, [1,1])) * y - ODelta);
 end
 end

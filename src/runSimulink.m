@@ -11,7 +11,7 @@ simTime = 1000; % simulation time
 gamma = [1, 1, 10]; % cost function gains
 
 % Load task
-[x0, B, d, t, u0, epsilon, O, R, limits, dynamics_type] = task();
+[x0, B, d, t, u0, epsilon, O, R, limits, dynamics_type, barrier] = task();
 
 if dynamics_type == 0 % thrust control
     dim = 5;
@@ -22,7 +22,7 @@ else
 end
 
 % Obstacle avoidance on / off
-params = false;
+params = true;
 
 %% Run simulink
 out = sim('modelMain', simTime);

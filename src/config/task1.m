@@ -1,5 +1,5 @@
 %%%% Task 1 %%%%
-function [x0, B, d, t, u0, epsilon, O, R, limits, dynamics_type] = task1
+function [x0, B, d, t, u0, epsilon, O, R, limits, dynamics_type, barrier] = task1
 %TASK1 Defines the settings for a simulation
 %
 %   OUTPUT:
@@ -13,11 +13,13 @@ function [x0, B, d, t, u0, epsilon, O, R, limits, dynamics_type] = task1
 %       R       -- scalar obstacles sensing radius
 %       limits  -- suggested visualizations limits [minX, maxX, minY, maxY]
 %       dynamics -- dynamics to use: thrust_control / velocity_control
+%       barrier -- barrier limit
 
 N_agents = 5; % Number of agents
 N_obstacles = 10; % Number of obstacles
-R = .5; % Sensing radius
+R = .2; % Sensing radius
 dynamics_type = 0; % 0: 'thrust control', 1: 'velocity control';
+barrier = 0.1; % barrier limit
 
 %% Formation
 B = [1, 0, 0, 0, -1, 1, 0;
