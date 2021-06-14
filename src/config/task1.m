@@ -1,5 +1,5 @@
 %%%% Task 1 %%%%
-function [x0, B, d, t, u0, epsilon, O, R, limits] = task1
+function [x0, B, d, t, u0, epsilon, O, R, limits, dynamics_type] = task1
 %TASK1 Defines the settings for a simulation
 %
 %   OUTPUT:
@@ -12,10 +12,12 @@ function [x0, B, d, t, u0, epsilon, O, R, limits] = task1
 %       O       -- 2xO obstacles positions column-wise
 %       R       -- scalar obstacles sensing radius
 %       limits  -- suggested visualizations limits [minX, maxX, minY, maxY]
+%       dynamics -- dynamics to use: thrust_control / velocity_control
 
 N_agents = 5; % Number of agents
 N_obstacles = 10; % Number of obstacles
 R = .5; % Sensing radius
+dynamics_type = 0; % 0: 'thrust control', 1: 'velocity control';
 
 %% Formation
 B = [1, 0, 0, 0, -1, 1, 0;
@@ -48,9 +50,13 @@ initial_position_boundaries = ...
     [-.5, .5;     % a
 	 -.5, .5;     % b
      -pi, pi];    % phi
-x0 = reshape(rand(3, N_agents) ...
+x0 = rand(3, N_agents) ...
     .* repmat(diff(initial_position_boundaries, [], 2), 1, N_agents) ...
-    + repmat(min(initial_position_boundaries, [], 2), 1, N_agents), [],1);
+    + repmat(min(initial_position_boundaries, [], 2), 1, N_agents);
+if dynamics_type == 0 %strcmp(dynamics_type,'thrust_control')
+    x0 = [x0; zeros(2, N_agents)]; % zero initial velocities
+end
+x0 = x0(:); % vectorized
 % Controller
 u0 = 1e-1*repmat(t, N_agents, 1);
 epsilon = .005;

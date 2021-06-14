@@ -7,18 +7,26 @@ rng(0);
 
 addpath(genpath('.'));
 task = @task1; % task specification
-simTime = 1*1e3; % simulation time
+simTime = 1000; % simulation time
 gamma = [1, 1, 10]; % cost function gains
 
 % Load task
-[x0, B, d, t, u0, epsilon, O, R, limits] = task();
+[x0, B, d, t, u0, epsilon, O, R, limits, dynamics_type] = task();
+
+if dynamics_type == 0 % thrust control
+    dim = 5;
+elseif dynamics_type == 1 % velocity control
+    dim = 3;
+else
+    error('Unknown dynamics type');
+end
 
 % Obstacle avoidance on / off
 params = false;
 
 %% Run simulink
 out = sim('modelMain', simTime);
-trajectory = reshape(out.y.Data.', 2, numel(x0) / 3, []); % 2xNxT
+trajectory = reshape(out.y.Data.', 2, numel(x0) / dim, []); % 2xNxT
 
 %% Plot results
 figure;
@@ -32,8 +40,8 @@ for k = 1:size(trajectory,3)
     xlim(limits(1:2));
     ylim(limits(3:4));
     hold off;
-%     drawnow;
-    pause(.25);
+    drawnow;
+%     pause(.25);
 end
 
 %% 

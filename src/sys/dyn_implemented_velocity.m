@@ -1,4 +1,4 @@
-function dxdt = dyn_implemented(x, u)
+function dxdt = dyn_implemented_velocity(x, u)
 %DYN Implements the plant dynamics
 %   INPUT:
 %       x -- 3Nx1 agents state
