@@ -1,4 +1,4 @@
-function dxdt = dyn_implemented_velocity(x, u)
+function dxdt = dyn_implemented_velocity(x, u, na, nw)
 %DYN Implements the plant dynamics
 %   INPUT:
 %       x -- 3Nx1 agents state
@@ -11,10 +11,18 @@ velSat = [-Inf, Inf];
 % llc
 ubar = zeros(2,N);
 states = reshape(x,3,N);
-delta = states(1:2,:) - reshape(u,2,N);
-theta = pi + states(3,:) - atan2(delta(2,:), delta(1,:));
-ubar(1,:) = k(1) * vecnorm(delta,2,1) .* cos(theta);
-ubar(2,:) = -k(1)*cos(theta).*sin(theta) - k(2) * theta;
+delta = reshape(u,2,N) - states(1:2,:);
+e = vecnorm(delta,2,1);
+theta = atan2(delta(2,:), delta(1,:)) - states(3,:);
+% theta(e < 1e-5) = 0;
+ubar(1,:) = k(1) * e .* cos(theta);
+% ubar(2,:) = -k(1)*cos(theta).*sin(theta) - k(2) * theta;
+
+thetag = theta(theta >= 1e-3);
+eg = e(theta >= 1e-3);
+ubar(2,:) = (ubar(1,:) ./ e + e.^2).* sin(theta);
+ubar(2,theta >= 1e-3) = (ubar(1,theta >= 1e-3) ./ eg + eg.^2 .* sin(thetag) ./ thetag) .* sin(thetag);
+
 
 % input saturation
 vel = max(velSat(1), min(velSat(2), ubar(1,:)));
