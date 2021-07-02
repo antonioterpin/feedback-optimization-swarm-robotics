@@ -4,7 +4,7 @@
 
 Feedback optimisation is an emerging technique to steer a system to an optimal steady state for a given objective function. We show that it is possible to employ this control strategy in a distributed manner to coordinate a swarm of agents for moving in formation towards a target. Moreover, we prove that the asymptotic convergence to the set of optimal configurations is guaranteed. Finally, we analyse the topological structure of the specified formation to derive sufficient conditions on the convergence of the swarm in formation around the desired target location.
 
-The paper is available [here]().
+The paper is available [here](paper.pdf).
 
 #### Table of contents
 1. [Getting started](#getstarted)
