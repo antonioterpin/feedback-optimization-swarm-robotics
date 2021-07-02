@@ -61,7 +61,7 @@ If you use any of this code, please cite the following:
 @Article{DistributedCoordination,
   author        = {Terpin, Antonio and Fricker, Sylvain and Perez, Michel},
   title         = {Distributed Feedback Optimisation for Robotics Coordination}, 
-  year          = {2020},
+  year          = {2021},
   url           = {https://github.com/antonioterpin/feedback-optimization-swarm-robotics}
 }
 ```
