@@ -6,12 +6,12 @@ function plotCosts(costs,lambda2,labels)
 %       labels: labels of the cost terms
 
 for i = 1:size(costs,2)
-    plot((costs(:,i) - min(costs(:,i))) / (max(costs(:,i))- min(costs(:,i))));
+    semilogx((costs(:,i) - min(costs(:,i))) / (max(costs(:,i))- min(costs(:,i))));
     hold on;
 end
 time = 0:0.01:size(costs,1);
 labels{end+1} = '$$e^{-\frac{t}{\lambda_2}}$$';
-plot(exp(-time/lambda2));
+semilogx(exp(-time/lambda2));
 xlabel('Simulation time', 'interpreter', 'latex');
 ylabel('$$(\Phi_i(t) - \min_t\Phi_i(t))/(\max_t\Phi_i(t)-\min_t\Phi_i(t))$$', 'interpreter', 'latex');
 title('Normalised cost over simulation time', 'interpreter', 'latex');
