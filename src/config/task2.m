@@ -1,7 +1,7 @@
 %%%% E formation %%%%
 
-simTime = 20000; % simulation time
-gamma = [1, .01, 10, 10]; % cost function gains
+simTime = 10000; % simulation time
+gamma = [1, .03, 10, 10]; % cost function gains
 params(1) = 0; % Obstacle avoidance on / off
 params(2) = 0; % Safety distance from agents on
 params(3) = 0; % R / params(3) Safety distance from agents on
@@ -12,7 +12,7 @@ N_obstacles = 10; % Number of obstacles
 R = .2; % Sensing radius
 barrier = .1; % barrier limit
 dim = 3; % size of the state
-formationIdx = [1, 250];
+formationIdx = [1, 250, 10000, 30000];
 
 %% Formation
 N_edges = 12;
@@ -48,7 +48,8 @@ end
 % interconnections between letters
 % B(2,33) = 1; B(13,33) = -1; % E -> T
 % B(14,34) = 1; B(21,34) = -1; % T -> H
-
+% V = [0, 1,   1,  .3, .3, .8,   .8,   .3, .3,  1,    1,    0;
+%      0, 0, -.5, -.5, -1, -1, -1.5, -1.5, -2, -2, -2.5, -2.5];
 % distances
 d = zeros(2,N_edges);
 % E

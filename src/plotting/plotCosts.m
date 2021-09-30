@@ -6,16 +6,18 @@ function plotCosts(costs,lambda2,labels)
 %       labels: labels of the cost terms
 
 for i = 1:size(costs,2)
-    semilogx((costs(:,i) - min(costs(:,i))) / (max(costs(:,i))- min(costs(:,i))));
+    semilogy((costs(:,i) - min(costs(:,i))) / (max(costs(:,i))- min(costs(:,i))));
     hold on;
 end
 time = 0:0.01:size(costs,1);
 labels{end+1} = '$$e^{-\frac{t}{\lambda_2}}$$';
-semilogx(exp(-time/lambda2));
+e = exp(-time/lambda2);
+semilogy((e - min(e)) / (max(e) - min(e)));
 xlabel('Simulation time', 'interpreter', 'latex');
-ylabel('$$(\Phi_i(t) - \min_t\Phi_i(t))/(\max_t\Phi_i(t)-\min_t\Phi_i(t))$$', 'interpreter', 'latex');
+% ylabel('$$\log((\Phi_i(t) - \min_t\Phi_i(t))/(\max_t\Phi_i(t)-\min_t\Phi_i(t)))$$', 'interpreter', 'latex');
+ylabel('$$\log(\text{Normalised cost})$$', 'interpreter', 'latex');
 title('Normalised cost over simulation time', 'interpreter', 'latex');
-legend(labels, 'interpreter', 'latex')
+legend(labels, 'interpreter', 'latex', 'Location','southwest')
 set(gca,'FontSize',28);
 end
 

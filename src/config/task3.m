@@ -1,6 +1,6 @@
 %%%% E formation -- unproper gains %%%%
 
-simTime = 20000; % simulation time
+simTime = 10000; % simulation time
 gamma = [1, 1, 10, 10]; % cost function gains
 params(1) = 0; % Obstacle avoidance on / off
 params(2) = 0; % Safety distance from agents on
@@ -12,7 +12,7 @@ N_obstacles = 10; % Number of obstacles
 R = .2; % Sensing radius
 barrier = .1; % barrier limit
 dim = 3; % size of the state
-formationIdx = [1, 250];
+formationIdx = [1, 250, 500, 1000];
 
 %% Formation
 N_edges = 12;
